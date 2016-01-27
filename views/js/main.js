@@ -450,10 +450,10 @@ var resizePizzas = function(size) {
 
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
-    for (var i = 0; i < document.querySelectorAll(".randomPizzaContainer").length; i++) {
-      var dx = determineDx(document.querySelectorAll(".randomPizzaContainer")[i], size);
-      var newwidth = (document.querySelectorAll(".randomPizzaContainer")[i].offsetWidth + dx) + 'px';
-      document.querySelectorAll(".randomPizzaContainer")[i].style.width = newwidth;
+    for (var i = 0; i < document.getElementsByClassName("randomPizzaContainer").length; i++) {
+      var dx = determineDx(document.getElementsByClassName("randomPizzaContainer")[i], size);
+      var newwidth = (document.getElementsByClassName("randomPizzaContainer")[i].offsetWidth + dx) + 'px';
+      document.getElementsByClassName("randomPizzaContainer")[i].style.width = newwidth;
     }
   }
 
@@ -500,11 +500,13 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 // Moves the sliding background pizzas based on scroll position
 
 //Moved scrollTop calculation out of the for loop in order to remove forced synchronous layout bottleneck.
+
 function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
   scrollTopCalculation = (document.body.scrollTop / 1250);
-  var items = document.querySelectorAll('.mover');
+  var items = document.getElementsByClassName('mover');
+  //Use getElementsByClassName instead of querySelectorAll since it is much faster
   for (var i = 0; i < items.length; i++) {
     var phase = Math.sin(scrollTopCalculation + (i % 5));
     items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
@@ -527,7 +529,7 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
-  for (var i = 0; i < 200; i++) {
+  for (var i = 0; i < 30; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
