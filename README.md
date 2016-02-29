@@ -25,11 +25,11 @@ For Part 1, the following optimizations were made:
 ###Optimizations for Part 2###
 For Part 2, the following optimizations were made:
 
-1) Removed **determineDx** function since it is unnecessary. Moved the code from the **sizeSwitcher** function into **changePizzaSizes** which uses switch statements to return the **newWidth** as a percentage. This way, there is no need to calculate the **dx** value and it removes the problem of forced synchronous layout since.
+1) Removed **determineDx** function since it is unnecessary. Moved the code from the **sizeSwitcher** function into **changePizzaSizes** which uses switch statements to return the **newWidth** as a percentage. This way, there is no need to calculate the **dx** value and it removes the problem of forced synchronous layout.
 
 2) Use **getElementsByClassName** instead of **QuerySelectorAll** since it is faster and more efficient.
 
-3) Reduced the number of sliding background pizzas being created to **35** instead of **200**.
+3) Reduced the number of sliding background pizzas being created to **35** instead of **200**. 200 pizzas are not necessary.
 
 4) Moved **items** array outside the updatePosition function since it does not need to be re-assigned again and again.
 
