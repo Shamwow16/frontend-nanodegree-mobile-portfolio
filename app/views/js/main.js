@@ -420,45 +420,33 @@ var resizePizzas = function(size) {
   }
 
   changeSliderLabel(size);
+//Remove determineDx function since it is unnecessary. Got rid of sizeSwitcher function and moved it inside changePizzaSizes
+//which returns the value of the newWidth as a percentage. No need to calculate dx value.
 
-   // Returns the size difference to change a pizza element from one size to another. Called by changePizzaSlices(size).
-  function determineDx (elem, size) {
-    //Moved the calculation of the widths and oldSize since these calculations caused a
-    //forced synchronous layer issue otherwise. Also, these values stay constant so there is no need to calculate
-    //them iteratively.
-    var oldWidth = elem.offsetWidth;
-    var windowWidth = document.querySelector("#randomPizzas").offsetWidth;
-    var oldSize = oldWidth / windowWidth;
 
-    // TODO: change to 3 sizes? no more xl?
-    // Changes the slider value to a percent width
-    function sizeSwitcher (size) {
-      switch(size) {
-        case "1":
-          return 0.25;
-        case "2":
-          return 0.3333;
-        case "3":
-          return 0.5;
-        default:
-          console.log("bug in sizeSwitcher");
-      }
-    }
-
-    var newSize = sizeSwitcher(size);
-    var dx = (newSize - oldSize) * windowWidth;
-
-    return dx;
-  }
+    var newwidth;
 
   // Iterates through pizza elements on the page and changes their widths
   function changePizzaSizes(size) {
+
+  switch(size) {
+        case "1":
+          newWidth = 25;
+          break;
+        case "2":
+          newWidth = 33.3;
+          break;
+        case "3":
+          newWidth = 50;
+          break;
+        default:
+          console.log("bug in sizeSwitcher");
+      }
+//Use getElementsByClassName instead of QuerySelectorAll since it is faster and more efficient.
     var pizzaArray = document.getElementsByClassName("randomPizzaContainer");
-  //Removed the calculation of dx and newwidth outside the for loop since the value remains constant.
-     var dx = determineDx(pizzaArray[0], size);
-      var newwidth = (pizzaArray[0].offsetWidth + dx) + 'px';
-    for (var i = 0; i < document.getElementsByClassName("randomPizzaContainer").length; i++) {
-      pizzaArray[i].style.width = newwidth;
+
+    for (var i = 0; i < pizzaArray.length; i++) {
+      pizzaArray[i].style.width = newWidth + '%';
     }
   }
 
@@ -506,15 +494,18 @@ function logAverageFrame(times) {   // times is the array of User Timing measure
 // Moves the sliding background pizzas based on scroll position
 
 //Moved scrollTop calculation out of the for loop in order to remove forced synchronous layout bottleneck.
-var items = document.getElementsByClassName('mover');
+ //Use getElementsByClassName instead of querySelectorAll since it is much faster
+  var items = document.getElementsByClassName('mover');
 function updatePositions() {
+
   frame++;
   window.performance.mark("mark_start_frame");
-  scrollTopCalculation = (document.body.scrollTop / 1250);
 
-  //Use getElementsByClassName instead of querySelectorAll since it is much faster
+  var scrollTopCalculation = document.body.scrollTop / 1250;
+
+
   for (var i = 0; i < items.length; i++) {
-    var phase = Math.sin(scrollTopCalculation + (i % 5));
+    var phase = Math.sin(scrollTopCalculation) + (i % 5);
     items[i].style.left = items[i].basicLeft + 100 * phase + 'px';
   }
 
@@ -536,7 +527,7 @@ document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
   //Reduced the number of sliding pizzas being created.
-  for (var i = 0; i < 30; i++) {
+  for (var i = 0; i < 35; i++) {
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
